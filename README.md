@@ -16,9 +16,9 @@ Read more about [RBAC](https://en.wikipedia.org/wiki/Role-based_access_control) 
 
 ## Installation
 
-    resolvers += Resolver.bintrayRepo("jyotman","maven")
+    resolvers += Resolver.bintrayRepo("slyngdk","maven")
 
-    libraryDependencies += "xyz.jyotman" %% "cerberus" % "0.0.5"
+    libraryDependencies += "dk.slyng" %% "cerberus" % "0.1.0"
     
 ## Basic Example
 
@@ -27,25 +27,43 @@ import xyz.Types.Data
 import xyz.jyotman.Cerberus
 import xyz.jyotman.Dsl._
     
-val data: Data = 
-    ("user" can (
-      ("read" any "project" attributes "title" & "description" & "!createdOn") also
-        ("read" own "project" attributes "title" & "description") also
-        ("create" own "project") also
-        ("update" own "profile")       
+case object UserRole extends Role()
+  case object CuratorRole extends Role()
+
+  case object ProjectResource extends Resource()
+  case object ProfileResource extends Resource()
+
+  case object CreateAction extends Action()
+  case object ReadAction extends Action()
+  case object UpdateAction extends Action()
+  case object DeleteAction extends Action()
+
+  val data: Data =
+    (UserRole can (
+      (ReadAction any ProjectResource attributes "title" & "description" & "!createdOn") also
+        (ReadAction own ProjectResource attributes "title" & "description") also
+        (CreateAction own ProjectResource) also
+        (UpdateAction own ProfileResource)
       )) and
-      ("curator" can (
-        ("read" any "project") also
-          ("update" any "project") also
-          ("delete" any "project")
-      ))
+      (CuratorRole can (
+        (ReadAction any ProjectResource allAttributes() ) also
+          (UpdateAction any ProjectResource) also
+          (DeleteAction any ProjectResource allAttributes())
+        ))
     
 val cerberus = Cerberus(data)
 
-cerberus.can("user", "create", "project").any // false
-cerberus.can("user", "create", "project").own // true
-cerberus.can("user", "read", "project").any(List("createdOn")) // false
-cerberus.can("user", "read", "project").any(List("title", "description")) // true
+cerberus.can(UserRole, CreateAction, ProjectResource).any // false
+cerberus.can(UserRole, CreateAction, ProjectResource).own // true
+cerberus.can(UserRole, ReadAction, ProjectResource).any(List("createdOn")) // false
+cerberus.can(UserRole, ReadAction, ProjectResource).any(List("title", "description")) // true
+
+// Checking multiple roles joined permissions
+val permission = cerberus.can(Seq(UserRole, CuratorRole), ReadAction, ProjectResource)
+assert(permission.any === true)
+assert(permission.own === true)
+assert(permission.anyAttributes === Some(List("*")))
+assert(permission.ownAttributes === Some(List("title", "description")))
 ```
     
 ## Documentation

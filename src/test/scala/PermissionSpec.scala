@@ -50,6 +50,21 @@ class PermissionSpec extends FlatSpec {
     assert(mergedPermission.anyAttributes === Some(List("name", "description")))
   }
 
+  it can "be + with other permission" in {
+    val permission1 = Permission(own = true, ownAttributes = Some(List("name")))
+    val permission2 = Permission(any = true, anyAttributes = Some(List("name", "!description", "!title")))
+    val permission3 = Permission(own = true, ownAttributes = Some(List("name", "description")))
+    val permission4 = Permission(any = true, anyAttributes = Some(List("name", "description")))
+    val mergedPermission = permission1 + permission2 + permission3 + permission4
+    assert(mergedPermission.own === true)
+    assert(mergedPermission.any === true)
+    assert(mergedPermission.ownAttributes === Some(List("name", "description")))
+    assert(mergedPermission.anyAttributes === Some(List("name", "!title", "description")))
+    val mergedPermission2 = mergedPermission + Permission(own = true, ownAttributes = Some(List("*")))
+    assert(mergedPermission2.ownAttributes === Some(List("*")))
+
+  }
+
   it should "have no permission when empty" in {
     val permission = Permission.EmptyPermission
     assert(permission.own === false)

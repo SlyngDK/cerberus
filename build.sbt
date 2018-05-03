@@ -1,20 +1,20 @@
 name := "cerberus"
 
-version := "0.0.5"
+version := "0.1.0"
 
-scalaVersion := "2.12.4"
+scalaVersion := "2.12.5"
 
-organization := "xyz.jyotman"
+organization := "dk.slyng"
 
 licenses += ("MIT", url("http://opensource.org/licenses/MIT"))
 
 scmInfo := Some(
   ScmInfo(
-    url("https://github.com/jyotman/cerberus"),
-    "scm:git:git@github.com:jyotman/cerberus.git"
+    url("https://github.com/SlyngDK/cerberus"),
+    "scm:git:git@github.com:SlyngDK/cerberus.git"
   )
 )
 
 resolvers += "Artima Maven Repository" at "http://repo.artima.com/releases"
 
-libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.4" % "test"
+libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.5" % "test"

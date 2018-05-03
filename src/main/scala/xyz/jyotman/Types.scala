@@ -1,7 +1,7 @@
 package xyz
 
-import xyz.jyotman.Permission
+import xyz.jyotman.{Action, Permission, Resource, Role}
 
 package object Types {
-  type Data = Map[String, Map[String, Map[String, Permission]]]
+  type Data = Map[Role, Map[Resource, Map[Action, Permission]]]
 }
