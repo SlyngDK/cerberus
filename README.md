@@ -1,12 +1,10 @@
 # Cerberus
 
 <p align="center">
-  <a href="https://yarnpkg.com/">
-    <img alt="Yarn" src="https://raw.githubusercontent.com/jyotman/cerberus/master/cerberus_logo.png" width="350">
-  </a>
+    <img alt="Cerberus" src="https://raw.githubusercontent.com/SlyngDK/cerberus/master/cerberus_logo.png" width="350">
 </p>
 
-[![Build Status](https://travis-ci.org/jyotman/cerberus.svg?branch=master)](https://travis-ci.org/jyotman/cerberus)
+[![Build Status](https://travis-ci.org/SlyngDK/cerberus.svg?branch=master)](https://travis-ci.org/SlyngDK/cerberus)
 
 Lightweight Role and Attribute based Access Control for Scala.
 
